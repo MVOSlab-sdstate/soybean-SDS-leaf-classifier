@@ -59,7 +59,7 @@ The app uses a trained **CNN-based feature extractor** and trained Random Forest
 
 **Soybean Field Affected by SDS**  
 ![Soybean SDS Field](images/sdsimg2.png)  
-*Source: MVOS Lab, South Dakota State University*
+*Source: https://extension.sdstate.edu/sites/default/files/2020-08/P-00182.pdf*
 
 
 ## 🚀 Try the Web App
