@@ -91,7 +91,7 @@ pip install -r requirements.txt
 
 ---
 
-## 👨‍🔬 Developed By
+## Developed By
 
 Machine Vision and Optical Sensor (MVOS) Lab  
 Department of Agricultural and Biosystems Engineering  
