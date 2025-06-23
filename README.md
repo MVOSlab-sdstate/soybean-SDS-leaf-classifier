@@ -100,7 +100,7 @@ South Dakota State University
 
 ---
 
-## 📬 Contact
+## Contact
 
 For questions, collaborations, or dataset access, please reach out to:  
 📧 **Dr. Pappu K. Yadav** — pappu.yadav@sdstate.edu
