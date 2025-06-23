@@ -4,7 +4,7 @@ An AI-driven Streamlit web application for detecting Sudden Death Syndrome (SDS)
 
 ---
 
-## 📌 Background: What is Soybean SDS?
+##  Background: What is Soybean SDS?
 
 Sudden Death Syndrome (SDS) is one of the **most destructive diseases** of soybean in North America. Caused by the soil-borne fungus *Fusarium virguliforme*, SDS can lead to:
 
@@ -16,7 +16,7 @@ Sudden Death Syndrome (SDS) is one of the **most destructive diseases** of soybe
 
 ---
 
-## 🧠 Role of Hyperspectral Imaging and AI
+## Role of Hyperspectral Imaging and AI
 
 Hyperspectral imaging captures **reflectance data across hundreds of narrow spectral bands**. It can detect subtle biochemical and physiological changes in plants caused by SDS:
 
@@ -28,7 +28,7 @@ This technology, when combined with deep learning (CNN models), can be trained t
 
 ---
 
-## 💻 About This Web App
+## About This Web App
 
 This web app allows growers and researchers to:
 
@@ -38,7 +38,7 @@ This web app allows growers and researchers to:
 - Classify leaf severity levels into 5 SDS stages (L1–L5)
 - Receive predictions using trained CNN + ML classifiers
 
-🧠 The app uses a trained **CNN-based feature extractor** and multiple classical classifiers (like Random Forest, SVM) to predict disease severity from early-stage hyperspectral cubes.
+The app uses a trained **CNN-based feature extractor** and multiple classical classifiers (like Random Forest, SVM) to predict disease severity from early-stage hyperspectral cubes.
 
 ---
 
