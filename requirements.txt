@@ -1,8 +1,8 @@
-streamlit
-numpy
-scipy
-matplotlib
-tensorflow
-joblib
-spectral
-pillow
+streamlit==1.26.0
+numpy==1.23.5
+scipy==1.10.1
+matplotlib==3.7.1
+tensorflow==2.11.0
+joblib==1.2.0
+spectral==0.23.1
+pillow==9.5.0
