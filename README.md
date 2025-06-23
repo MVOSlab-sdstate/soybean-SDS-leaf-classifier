@@ -105,4 +105,8 @@ South Dakota State University
 For questions, collaborations, or dataset access, please reach out to:  
 📧 **Dr. Pappu K. Yadav** — pappu.yadav@sdstate.edu
 
+---
+**Acknowledgement**  
+![Soybean SDS Field](sdsu_logo.png)  
+
 
