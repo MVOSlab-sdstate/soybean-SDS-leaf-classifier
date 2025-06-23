@@ -4,7 +4,7 @@ An AI-driven Streamlit web application for detecting Sudden Death Syndrome (SDS)
 
 ---
 
-##  Background: What is Soybean SDS?
+##  What is Soybean SDS?
 
 Sudden Death Syndrome (SDS) is one of the **most destructive diseases** of soybean in North America. Caused by the soil-borne fungus *Fusarium virguliforme*, SDS can lead to:
 
