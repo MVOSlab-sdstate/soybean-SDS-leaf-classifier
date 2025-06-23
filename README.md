@@ -79,13 +79,14 @@ pip install -r requirements.txt
 ## 📁 Project Structure
 
 ```
-├── app.py                   # Streamlit app
-├── models/                  # Saved CNN and classifier models
 ├── images/                  # Example images of SDS infected soybean fields and plants
+├── models/                  # Saved CNN and classifier models
 ├── testfiles/               # Hypercubes of soybean leaves in .mat format
+├── README.md                # Readme file
+├── app.py                   # Streamlit app
 ├── requirements.txt         # Conatins information about all the required libraries, packages and dependencies
 ├── runtime.txt              # runtime settings
-└── README.md
+└── sdsu_logo.png            # Logo file for the web app
 ```
 
 ---
