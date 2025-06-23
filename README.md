@@ -62,13 +62,13 @@ The app uses a trained **CNN-based feature extractor** and trained Random Forest
 *Source: https://extension.sdstate.edu/sites/default/files/2020-08/P-00182.pdf*
 
 
-## 🚀 Try the Web App
+## Try the Web App
 
 🌐 [Launch the App](https://sdsumvoslabsoybeansds.streamlit.app)
 
 ---
 
-## 🧪 Requirements for Local Setup
+## Requirements for Local Setup
 
 ```bash
 pip install -r requirements.txt
