@@ -61,9 +61,6 @@ The app uses a trained **CNN-based feature extractor** and trained Random Forest
 ![Soybean SDS Field](images/sdsimg2.png)  
 *Source: MVOS Lab, South Dakota State University*
 
-**SDS Infected Soybean Leaf**  
-![Infected Leaf](images/sdsimg1.png)  
-*Source: MVOS Lab, SDSU*
 
 ## 🚀 Try the Web App
 
@@ -84,9 +81,10 @@ pip install -r requirements.txt
 ```
 ├── app.py                   # Streamlit app
 ├── models/                  # Saved CNN and classifier models
-├── images/                   # Helper scripts for visualization and inference
-├── data_samples/            # Example .hdr/.iso hyperspectral image pairs
-├── requirements.txt         # Theme and runtime settings
+├── images/                  # Example images of SDS infected soybean fields and plants
+├── testfiles/               # Hypercubes of soybean leaves in .mat format
+├── requirements.txt         # Conatins information about all the required libraries, packages and dependencies
+├── runtime.txt              # runtime settings
 └── README.md
 ```
 
@@ -97,7 +95,7 @@ pip install -r requirements.txt
 Machine Vision and Optical Sensor (MVOS) Lab  
 Department of Agricultural and Biosystems Engineering  
 South Dakota State University  
-[Website](https://www.sdstate.edu/agricultural-biosystems-engineering) | [MVOS Lab GitHub](https://github.com/mvoslab)
+[Website](https://www.mvoslab.com) | [MVOS Lab GitHub](https://github.com/MVOSlab-sdstate)
 
 ---
 
