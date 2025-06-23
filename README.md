@@ -32,13 +32,13 @@ This technology, when combined with deep learning (CNN models), can be trained t
 
 This web app allows growers and researchers to:
 
-- **Upload calibrated hyperspectral leaf images** (.hdr and .iso pairs)
-- Visualize the hyperspectral cube
+- **Upload calibrated hyperspectral leaf images** (.mat)
+- Visualize Pseudo RGB image of leaf samples
 - Generate **spectral signatures** of the central pixel
-- Classify leaf severity levels into 5 SDS stages (L1–L5)
+- Classify leaf into SDS infected or healthy (not-infected)
 - Receive predictions using trained CNN + ML classifiers
 
-The app uses a trained **CNN-based feature extractor** and multiple classical classifiers (like Random Forest, SVM) to predict disease severity from early-stage hyperspectral cubes.
+The app uses a trained **CNN-based feature extractor** and trained Random Forest ML classical classifier from early-stage hyperspectral cubes.
 
 ---
 
@@ -55,15 +55,15 @@ The app uses a trained **CNN-based feature extractor** and multiple classical cl
 
 ## 🖼 Example Images
 
-### SDS-Infected Soybean Field  
-![Soybean Field](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Soybean_field_with_SDS.jpg/800px-Soybean_field_with_SDS.jpg)
+### Visual Examples
 
-### Early Symptoms on Leaf  
-![SDS Leaf Symptoms](https://www.researchgate.net/profile/Madeline-Lakatos/publication/349101840/figure/fig1/AS:990989046906882@1612479416561/Symptoms-of-sudden-death-syndrome-on-soybean-leaves-Image-credit-M-Lakatos-ISU.ppm)
+**Soybean Field Affected by SDS**  
+![Soybean SDS Field](images/sdsimg2.png)  
+*Source: MVOS Lab, South Dakota State University*
 
-> *(Note: Replace these with your actual dataset samples if needed.)*
-
----
+**SDS Infected Soybean Leaf**  
+![Infected Leaf](images/sdsimg1.png)  
+*Source: MVOS Lab, SDSU*
 
 ## 🚀 Try the Web App
 
@@ -84,11 +84,9 @@ pip install -r requirements.txt
 ```
 ├── app.py                   # Streamlit app
 ├── models/                  # Saved CNN and classifier models
-├── utils/                   # Helper scripts for visualization and inference
+├── images/                   # Helper scripts for visualization and inference
 ├── data_samples/            # Example .hdr/.iso hyperspectral image pairs
-├── .streamlit/
-│   └── config.toml          # Theme and runtime settings
-├── requirements.txt
+├── requirements.txt         # Theme and runtime settings
 └── README.md
 ```
 
