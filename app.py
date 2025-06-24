@@ -30,7 +30,7 @@ logo_base64 = encode_image_to_base64(logo_path)
 st.markdown(
     f"""
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{logo_base64}" width="500" style="margin-bottom: 35px;" />
+        <img src="data:image/png;base64,{logo_base64}" width="600" style="margin-bottom: 40px;" />
         <h1 style="font-size: 40px; font-weight: 800;">🌿Soybean SDS Leaf Classifier</h1>
     </div>
     """,
