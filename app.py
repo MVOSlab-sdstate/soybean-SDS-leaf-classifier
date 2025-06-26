@@ -62,7 +62,7 @@ def generate_pdf_report(results: list, model_name: str, tz_name: str) -> bytes:
 
     logo_flow = None
     if LOGO_PATH.exists():
-        logo_flow = RLImage(str(LOGO_PATH), width=2.0*inch)  # keep aspect
+        logo_flow = RLImage(str(LOGO_PATH), width=2.0*inch, height=0.7*inch)  # keep aspect
 
     header_table = Table(
         [[Paragraph(address_html + "<br/>" + now_html, subtitle_style),
