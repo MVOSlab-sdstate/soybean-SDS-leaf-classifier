@@ -10,6 +10,13 @@ from pathlib import Path
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib import colors
+from datetime import datetime
+import io
 
 # ─────────────── paths & constants ────────────────────────────────────
 REPO_ROOT      = Path(__file__).parent
@@ -33,30 +40,71 @@ def load_cnn_extractor():
 def load_classifier(model_name: str):
     return joblib.load(MODELS_DIR / model_name)
 
-def build_pdf(lines: list, model_name: str) -> bytes:
-    buf = io.BytesIO()
-    c   = canvas.Canvas(buf, pagesize=LETTER)
-    w, h = LETTER
-    y = h - inch
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(inch, y, "Soybean SDS Classification Report")
-    y -= 0.3 * inch
-    c.setFont("Helvetica", 10)
-    c.drawString(inch, y, f"Model: {model_name}")
-    y -= 0.2 * inch
-    c.drawString(inch, y, f"Date: {datetime.datetime.now():%Y-%m-%d %H:%M}")
-    y -= 0.4 * inch
-    c.setFont("Helvetica", 11)
-    for line in lines:
-        if y < inch:
-            c.showPage()
-            y = h - inch
-            c.setFont("Helvetica", 11)
-        c.drawString(inch, y, line)
-        y -= 0.25 * inch
-    c.save()
-    buf.seek(0)
-    return buf.read()
+
+def generate_pdf_report(results: list, filename="SDS_Classification_Report.pdf"):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=LETTER)
+
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER)
+    subtitle_style = ParagraphStyle('Subtitle', parent=styles['Normal'], alignment=TA_LEFT, fontSize=10)
+    table_style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('GRID', (0, 0), (-1, -1), 0.25, colors.grey)
+    ])
+
+    content = []
+
+    # Address + Date Header
+    address = "Ag & Biosystems Engineering\nRaven Precision Ag Building 104, Box 2100\nBrookings, SD 57007"
+    now = datetime.now().strftime("%B %d, %Y | %I:%M %p")
+    content.append(Paragraph(address, subtitle_style))
+    content.append(Paragraph(now, subtitle_style))
+    content.append(Spacer(1, 12))
+
+    # Title
+    content.append(Paragraph("Soybean SDS Leaf Classification Report", title_style))
+    content.append(Spacer(1, 24))
+
+    # Table of Results
+    table_data = [['Filename', 'Predicted Class']]
+    table_data += [[r['filename'], r['prediction']] for r in results]
+    table = Table(table_data, colWidths=[3 * inch, 3 * inch])
+    table.setStyle(table_style)
+    content.append(table)
+    content.append(Spacer(1, 24))
+
+    # Spectral Plot (optional - from last file)
+    if results and 'spectrum' in results[-1]:
+        fig, ax = plt.subplots(figsize=(5, 2))
+        ax.plot(results[-1]['spectrum'], linewidth=1.5)
+        ax.set_title("Spectral Signature (Central Pixel)")
+        ax.set_xlabel("Band")
+        ax.set_ylabel("Reflectance")
+        img_buffer = io.BytesIO()
+        plt.tight_layout()
+        fig.savefig(img_buffer, format='PNG')
+        plt.close(fig)
+        img_buffer.seek(0)
+        img = RLImage(img_buffer, width=5 * inch, height=2.2 * inch)
+        content.append(img)
+
+    # Footer via canvas
+    def add_footer(canvas, doc):
+        canvas.saveState()
+        footer_height = 40
+        canvas.setFillColor(colors.HexColor("#00289c"))  # SDSU blue
+        canvas.rect(0, 0, doc.pagesize[0], footer_height, fill=1, stroke=0)
+        canvas.setFillColor(colors.white)
+        canvas.setFont("Helvetica-Bold", 10)
+        canvas.drawCentredString(doc.pagesize[0] / 2, 12, "Ag & Biosystems Engineering · SDSU")
+        canvas.restoreState()
+
+    doc.build(content, onFirstPage=add_footer, onLaterPages=add_footer)
+    buffer.seek(0)
+    return buffer
 
 # ─────────────── Streamlit layout ─────────────────────────────────────
 st.set_page_config(page_title="🌿 SDS Leaf Classifier", layout="centered")
@@ -150,14 +198,14 @@ if st.button("Classify Leaf(s)"):
         pdf_lines.append(f"{up.name}: {label}")
         os.remove(tmp_path)
 
-    # Build & offer PDF
-    pdf_bytes = build_pdf(pdf_lines, chosen_model)
+    pdf_bytes = generate_pdf_report(classification_results)
     st.download_button(
-        "📥 Download PDF Report",
+        label="📄 Download PDF Report",
         data=pdf_bytes,
-        file_name="SDS_leaf_report.pdf",
+        file_name="SDS_Classification_Report.pdf",
         mime="application/pdf"
     )
+
 
 # Footer
 st.markdown(
