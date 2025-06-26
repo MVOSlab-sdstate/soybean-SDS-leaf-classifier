@@ -13,7 +13,7 @@ import base64
 
 # ─────────────── constants ──────────────────────────────────────────────────
 MODELS_DIR      = Path("models")
-CNN_PATH        = MODELS_DIR / "cnn_feature_extractor.keras"   # change if needed
+CNN_PATH        = MODELS_DIR / "cnn_fold_5.keras"   # change if needed
 GA_BANDS        = [14, 25, 53, 72, 90]     # 5 GA-selected bands
 RGB_IDX         = [91, 82, 53]             # pseudo-RGB for preview
 EXPECTED_SHAPE  = (125, 100, 101)
