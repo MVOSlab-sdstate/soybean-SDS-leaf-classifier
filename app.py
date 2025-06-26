@@ -58,7 +58,7 @@ def generate_pdf_report(results: list) -> bytes:
 
     # logo (placed in a 2‑column table so text is left, logo right)
     logo_path = REPO_ROOT / "images" / "sdsu_abe_logo.png"  # put logo in images/
-    logo_flow = RLImage(str(logo_path), width=2.2*inch)
+    logo_flow = RLImage(str(logo_path), width=1.5*inch, height=1.0*inch)
     header_table = Table(
         [[Paragraph(address+"<br/>"+now, subtitle_style), logo_flow]],
         colWidths=[4.3*inch, 2.2*inch]
