@@ -1,4 +1,4 @@
-# app.py ── Soybean SDS Leaf Classifier (Google-Drive models)
+# app.py ── Soybean SDS Leaf Classifier 
 # ----------------------------------------------------------------
 import streamlit as st
 import numpy as np
