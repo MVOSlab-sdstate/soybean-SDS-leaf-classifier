@@ -64,7 +64,7 @@ The app uses a trained **CNN-based feature extractor** and trained Random Forest
 
 ## Try the Web App
 
-🌐 [Launch the App](https://sdsumvoslabsoybeansds.streamlit.app)
+🌐 [Launch the App](https://soybeansdsclassifiermvoslabsdsu.streamlit.app/)
 
 ---
 
