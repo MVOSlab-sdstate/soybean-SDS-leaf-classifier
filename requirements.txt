@@ -8,4 +8,5 @@ joblib==1.5.1
 spectral==0.24
 Pillow==11.2.1
 reportlab==4.1.0
+gdown==5.2.0          
 
