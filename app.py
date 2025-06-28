@@ -239,9 +239,7 @@ if st.button("Classify Leaf(s)"):
         rgb = cube[:, :, RGB_IDX]
         rgb = ((rgb - rgb.min()) / (np.ptp(rgb)+1e-6)*255).astype(np.uint8)
         st.image(rgb, caption=None)
-        st.markdown('<div style="text-align:center; color:white; font-weight:600;">RGB Visualization</div>',
-            unsafe_allow_html=True)
-      
+        st.markdown('<div style="color:white; font-weight:500;">RGB Visualization</div>', unsafe_allow_html=True)
 
         # central-pixel spectrum
         cpix = cube[cube.shape[0]//2, cube.shape[1]//2, :]
