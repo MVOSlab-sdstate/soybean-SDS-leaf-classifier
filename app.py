@@ -238,7 +238,10 @@ if st.button("Classify Leaf(s)"):
         # RGB preview
         rgb = cube[:, :, RGB_IDX]
         rgb = ((rgb - rgb.min()) / (np.ptp(rgb)+1e-6)*255).astype(np.uint8)
-        st.image(rgb, caption="RGB Visualization")
+        st.image(rgb, caption=None)
+        st.markdown('<div style="text-align:center; color:white; font-weight:600;">RGB Visualization</div>',
+            unsafe_allow_html=True)
+      
 
         # central-pixel spectrum
         cpix = cube[cube.shape[0]//2, cube.shape[1]//2, :]
@@ -249,8 +252,8 @@ if st.button("Classify Leaf(s)"):
         # prediction
         feat  = cnn_extr.predict(cube[:, :, GA_BANDS][None, ...], verbose=0)
         label = "Healthy" if clf.predict(feat)[0] == 0 else "Infected (SDS)"
-        st.success(f"✅ Prediction: **{label}**")
-
+        st.markdown(f'<div style="color:white; font-size:20px; font-weight:bold;">✅ Prediction: {label}</div>',unsafe_allow_html=True)
+        
         records.append({"filename": up.name,
                         "prediction": label,
                         "spectrum" : cpix.tolist()})
