@@ -148,6 +148,22 @@ def build_pdf(results: list, model_name: str, tz_name: str) -> bytes:
 # ─────────────── Streamlit UI ──────────────────────────────────────
 st.set_page_config(page_title="🌿 SDS Leaf Classifier", layout="centered")
 
+BACKGROUND_IMAGE_PATH = REPO_ROOT / "images" / "soybeanfield_homepage.jpg"
+if BACKGROUND_IMAGE_PATH.exists():
+    bg_image_encoded = encode_b64(BACKGROUND_IMAGE_PATH)
+    st.markdown(f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpeg;base64,{bg_image_encoded}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    st.warning("Background image not found. Please check path.")
+
 header_logo = encode_b64(WEB_LOGO_PATH)
 st.markdown(f"""
 <div style="text-align:center">
