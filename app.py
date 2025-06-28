@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime
 import pytz
 
-# ------------- PDF building (unchanged) --------------------------
+# =============  PDF imports (unchanged)  =========================
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.units  import inch
 from reportlab.lib.enums  import TA_LEFT
@@ -17,9 +17,9 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, PageBreak,
                                 Image as RLImage, Table, TableStyle)
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
-# ------------- Google-Drive file-ID maps -------------------------
+# =============  Google-Drive ID map (unchanged)  =================
 CNN_FILE_ID = "1u2YgYoOfxH34glArx4pLJm2yOUZjWk2u"          # cnn_fold_5.keras
-MODEL_ID_MAP = {                                            # joblib models
+MODEL_ID_MAP = {
     "AdaBoost_fold_5.joblib"         : "1VSL_q8CKZGaX4_f5Hvt4u6aJAQWMm3OG",
     "Decision Tree_fold_5.joblib"    : "1PQCi_QasKDavdCEDU8ySwOISrGo0aaIi",
     "Gaussian Process_fold_5.joblib" : "1PfMq7iqgpWV0p42dBXCDghhtKmVlCiTo",
@@ -32,7 +32,7 @@ MODEL_ID_MAP = {                                            # joblib models
     "Random Forest_fold_5.joblib"    : "1qbfjSaCKSNHcKrJCuqtSjtK4KQ_HCBmj",
 }
 
-# ------------- constants & paths ---------------------------------
+# =============  constants & paths  ===============================
 REPO_ROOT      = Path(__file__).parent
 GA_BANDS       = [14, 25, 53, 72, 90]
 RGB_IDX        = [91, 82, 53]
@@ -44,7 +44,7 @@ BACKGROUND_IMAGE = REPO_ROOT / "images" / "soybeanfield_homepage.jpg"
 
 TMP_DIR = Path(tempfile.gettempdir())
 
-# ------------- helpers -------------------------------------------
+# =============  helper utilities  ================================
 def encode_b64(path: Path) -> str:
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
@@ -68,7 +68,7 @@ def load_classifier(model_name: str):
     fp  = download_from_drive(fid, TMP_DIR / model_name)
     return joblib.load(fp)
 
-# ------------- PDF generation (unchanged) ------------------------
+# =============  PDF builder (unchanged)  =========================
 def build_pdf(records: list, model_name: str, tz_name: str) -> bytes:
     buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=LETTER)
@@ -79,12 +79,12 @@ def build_pdf(records: list, model_name: str, tz_name: str) -> bytes:
     ssty = ParagraphStyle("small", parent=sty["Normal"],
                           alignment=TA_LEFT, fontSize=10)
 
-    # ---------- header ----------
+    # header
     addr = ("Ag & Biosystems Engineering<br/>"
             "Raven Precision Ag Building&nbsp;104, Box&nbsp;2100<br/>"
             "Brookings, SD&nbsp;57007")
-    ts   = datetime.now(pytz.timezone(tz_name)) \
-            .strftime("%B&nbsp;%d,&nbsp;%Y&nbsp;|&nbsp;%I:%M&nbsp;%p")
+    ts   = datetime.now(pytz.timezone(tz_name)).strftime(
+           "%B&nbsp;%d,&nbsp;%Y&nbsp;|&nbsp;%I:%M&nbsp;%p")
     logo = RLImage(str(LOGO_PATH), width=2*inch, height=0.7*inch) \
            if LOGO_PATH.exists() else ""
 
@@ -98,12 +98,11 @@ def build_pdf(records: list, model_name: str, tz_name: str) -> bytes:
              Paragraph(f"<b>Model Used:</b> {model_name}", ssty),
              Spacer(1, 18)]
 
-    # ---------- one page per file ----------
+    # one page per file
     for i, rec in enumerate(records, 1):
         story += [Paragraph(f"{i}. File: {rec['filename']}", fsty),
                   Paragraph(f"Prediction: <b>{rec['prediction']}</b>", psty),
                   Spacer(1, 10)]
-
         if rec.get("spectrum"):
             fig, ax = plt.subplots(figsize=(5,2))
             ax.plot(rec["spectrum"], lw=1.3)
@@ -114,11 +113,9 @@ def build_pdf(records: list, model_name: str, tz_name: str) -> bytes:
             plt.close(fig); tmp.seek(0)
             story += [RLImage(tmp, width=5*inch, height=2.1*inch),
                       Spacer(1, 16)]
-
-        if i < len(records):  # page-break except last page
+        if i < len(records):
             story.append(PageBreak())
 
-    # ---------- footer ----------
     def footer(canvas, doc):
         canvas.saveState()
         h = 40
@@ -134,15 +131,16 @@ def build_pdf(records: list, model_name: str, tz_name: str) -> bytes:
     buf.seek(0)
     return buf.getvalue()
 
-# ------------- Streamlit UI --------------------------------------
+# =============  Streamlit UI  ====================================
 st.set_page_config(page_title="🌿 SDS Leaf Classifier", layout="centered")
 
-# --- background styling ---
+# ---- background + styling ----
 if BACKGROUND_IMAGE.exists():
     bg64 = encode_b64(BACKGROUND_IMAGE)
     st.markdown(
         f"""
         <style>
+        /* Background with dark overlay */
         .stApp {{
             background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
                         url("data:image/jpeg;base64,{bg64}");
@@ -150,35 +148,39 @@ if BACKGROUND_IMAGE.exists():
             background-position: center;
             background-attachment: fixed;
         }}
-        /* Global text */
-        h1, h2, h3, h4, h5, h6, p, label, span {{
+        /* Headlines white */
+        h1, h2, h3, h4, h5, h6 {{
             color:#ffffff !important;
         }}
-        /* Glass effect for widgets */
+        /* Widget “glass cards” */
         .stSelectbox, .stFileUploader, .stTextInput {{
-            background: rgba(255,255,255,0.85) !important;
+            background: rgba(255,255,255,0.92) !important;
             border-radius: 8px;
+        }}
+        /* → labels inside those widgets BLACK */
+        .stSelectbox label, .stFileUploader label, .stTextInput label {{
             color:#000 !important;
         }}
+        /* Classify button: white bg, black text */
         .stButton>button {{
-            background: rgba(255,255,255,0.9) !important;
+            background: rgba(255,255,255,0.93) !important;
             border-radius:8px;
             color:#000 !important;
+            font-weight:600;
         }}
-        /* download button */
+        /* Download button: SDSU blue */
         .stDownloadButton>button {{
             background:#00289c !important;
             color:#fff !important;
             border-radius:8px;
+            font-weight:600;
         }}
         </style>
         """,
         unsafe_allow_html=True,
     )
-else:
-    st.warning("Background image not found … continuing without it.")
 
-# --- Header ---
+# ---- Header ----
 header_logo = encode_b64(WEB_LOGO_PATH)
 st.markdown(
     f"""
@@ -191,7 +193,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- Select model & timezone ---
+# ---- model & timezone selectors ----
 model_name = st.selectbox("Choose a trained classifier:", sorted(MODEL_ID_MAP))
 tz_name    = st.selectbox(
     "Report time-zone:",
@@ -200,13 +202,13 @@ tz_name    = st.selectbox(
     index=2,
 )
 
-# --- Upload cubes ---
+# ---- cube uploader ----
 mats = st.file_uploader(
     "Upload soybean leaf hyperspectral cube(s) (.mat)",
     type=["mat"], accept_multiple_files=True
 )
 
-# ------------- Run classification ---------------------------------
+# =============  Classification ===================================
 if st.button("Classify Leaf(s)"):
     if not mats:
         st.error("Please add at least one .mat file."); st.stop()
@@ -233,35 +235,35 @@ if st.button("Classify Leaf(s)"):
             st.warning(f"{up.name}: expected {EXPECTED_SHAPE}, got {cube.shape}")
             os.remove(tmp_path); continue
 
-        # --- RGB preview ---
+        # RGB preview
         rgb = cube[:, :, RGB_IDX]
-        rgb = ((rgb - rgb.min()) / (np.ptp(rgb)+1e-6) * 255).astype(np.uint8)
+        rgb = ((rgb - rgb.min()) / (np.ptp(rgb)+1e-6)*255).astype(np.uint8)
         st.image(rgb, caption="RGB Visualization")
 
-        # --- spectrum plot ---
+        # central-pixel spectrum
         cpix = cube[cube.shape[0]//2, cube.shape[1]//2, :]
         fig, ax = plt.subplots(); ax.plot(range(6,107), cpix)
         ax.set_xlabel("Band"); ax.set_ylabel("Reflectance")
         ax.set_title("Central Pixel Spectral Profile"); st.pyplot(fig)
 
-        # --- prediction ---
+        # prediction
         feat  = cnn_extr.predict(cube[:, :, GA_BANDS][None, ...], verbose=0)
         label = "Healthy" if clf.predict(feat)[0] == 0 else "Infected (SDS)"
         st.success(f"✅ Prediction: **{label}**")
 
-        records.append(
-            {"filename": up.name, "prediction": label, "spectrum": cpix.tolist()}
-        )
+        records.append({"filename": up.name,
+                        "prediction": label,
+                        "spectrum" : cpix.tolist()})
         os.remove(tmp_path)
 
-    # --------- PDF ----------
+    # PDF download
     if records:
         pdf = build_pdf(records, model_name, tz_name)
         st.download_button("📄 Download PDF Report", pdf,
                            file_name="SDS_Classification_Report.pdf",
                            mime="application/pdf")
 
-# --- footer ---
+# ---- footer ----
 st.markdown(
     """
     <hr style="margin-top:50px"/>
