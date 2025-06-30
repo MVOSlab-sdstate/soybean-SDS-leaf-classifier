@@ -80,7 +80,6 @@ pip install -r requirements.txt
 
 ```
 ├── images/                  # Example images of SDS infected soybean fields and plants
-├── models/                  # Saved CNN and classifier models
 ├── testfiles/               # Hypercubes of soybean leaves in .mat format
 ├── README.md                # Readme file
 ├── app.py                   # Streamlit app
