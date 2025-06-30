@@ -85,6 +85,7 @@ pip install -r requirements.txt
 ├── app.py                   # Streamlit app
 ├── requirements.txt         # Conatins information about all the required libraries, packages and dependencies
 ├── runtime.txt              # runtime settings
+├── sdsu_abe_logo.png        # logo file for PDF report
 └── sdsu_logo.png            # Logo file for the web app
 ```
 
